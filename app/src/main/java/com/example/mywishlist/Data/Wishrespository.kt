@@ -7,7 +7,7 @@ class WishRepository(private val wishDao: WishDao) {
         wishDao.addAWish(wish)
     }
 
-    fun getWish(): Flow<List<Wish>> =
+    fun getWishes(): Flow<List<Wish>> =
         wishDao.getAllWishes() //Flow automatically use asynchronous methods i.e no need for suspend
 
     fun getAWishById(id:Long) : Flow<Wish>{
