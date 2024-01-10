@@ -7,7 +7,7 @@ import com.example.mywishlist.Data.WishDataBase
 import com.example.mywishlist.Data.WishRepository
 
 object Graph {
-    lateinit var database: WishDataBase
+    lateinit var database: WishDataBase //by using lateinit we promise to initialise database before using it
 
     val wishRepository by lazy { //by lazy means that this repo will not be loaded in the beginning, It will only be
         //loaded when we access it, it makes performance better

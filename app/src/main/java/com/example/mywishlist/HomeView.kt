@@ -16,6 +16,7 @@ import androidx.compose.material.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
@@ -23,7 +24,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
-import com.example.mywishlist.Data.DummyWish
 import com.example.mywishlist.Data.Wish
 
 @Composable
@@ -47,20 +47,23 @@ fun HomeView(
                 onClick = { Toast.makeText(context,
                     "Floating Action button clicked",
                     Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screen.AddScrean.route)
+                    navController.navigate(Screen.AddScrean.route + "/0L")
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }
 
     ) {
+        val wishlist = viewModel.getAllWishes.collectAsState(initial = listOf())
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            items(DummyWish.wishList) {
+            items(wishlist.value) {
                 wish -> WishItem(wish = wish) {
+                val id = wish.id
+                navController.navigate(Screen.AddScrean.route + "/$id")
             }
             }
 
