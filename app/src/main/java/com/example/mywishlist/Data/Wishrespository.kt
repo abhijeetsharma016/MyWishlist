@@ -2,15 +2,16 @@ package com.example.mywishlist.Data
 
 import kotlinx.coroutines.flow.Flow
 
+
 class WishRepository(private val wishDao: WishDao) {
-    suspend fun addWish(wish: Wish){
+
+    suspend fun addWish(wish:Wish){
         wishDao.addAWish(wish)
     }
 
-    fun getWishes(): Flow<List<Wish>> =
-        wishDao.getAllWishes() //Flow automatically use asynchronous methods i.e no need for suspend
+    fun getWishes(): Flow<List<Wish>> = wishDao.getAllWishes()
 
-    fun getAWishById(id:Long) : Flow<Wish>{
+    fun getAWishById(id:Long) :Flow<Wish> {
         return wishDao.getAWishById(id)
     }
 
@@ -21,4 +22,5 @@ class WishRepository(private val wishDao: WishDao) {
     suspend fun deleteAWish(wish: Wish){
         wishDao.deleteAWish(wish)
     }
+
 }

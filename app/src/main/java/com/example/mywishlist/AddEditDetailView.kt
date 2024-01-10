@@ -45,7 +45,6 @@ fun AddEditDetailView(
     }
 
     val scope = rememberCoroutineScope()
-
     val scaffoldState = rememberScaffoldState()
 
     if (id != 0L) {

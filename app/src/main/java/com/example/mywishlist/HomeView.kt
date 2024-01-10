@@ -1,5 +1,5 @@
-package com.example.mywishlist
-import android.util.Log
+package com.xample.mywishlist
+
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -39,8 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.*
 import androidx.compose.ui.draw.scale
 import androidx.navigation.NavController
+import com.example.mywishlist.AppBarView
 import com.example.mywishlist.Data.Wish
-import java.lang.Exception
+import com.example.mywishlist.Screen
+import com.example.mywishlist.WishViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -60,7 +62,7 @@ fun HomeView(
                 backgroundColor = Color.Black,
                 onClick = {
                     Toast.makeText(context, "FAButton Clicked", Toast.LENGTH_LONG).show()
-                    navController.navigate(Screen.AddScrean.route + "/0L")
+                    navController.navigate(Screen.AddScreen.route + "/0L")
 
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
@@ -72,31 +74,47 @@ fun HomeView(
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .padding(it)){
-            items(wishlist.value){
+            items(wishlist.value, key={wish-> wish.id} ){
                     wish ->
                 val dismissState = rememberDismissState(
                     confirmStateChange = {
-                        try{
-                        if(it == DismissValue.DismissedToEnd || it== DismissValue.DismissedToStart){
-                            viewModel.deleteWish(wish)
-                        }
-                        true
-                    }catch (e:Exception){
-                            Log.e("WishList", "Error while deleting wish: ${e.message}", e)
+                        try {
+                            if (it == DismissValue.DismissedToEnd || it == DismissValue.DismissedToStart) {
+                                viewModel.deleteWish(wish)
+                            }
+                            true
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                             false
-                    }
+                        }
                     }
                 )
 
                 SwipeToDismiss(
                     state = dismissState,
-                    background = {},
+                    background = {
+                        val color by animateColorAsState(
+                            if(dismissState.dismissDirection
+                                == DismissDirection.EndToStart) Color.Red else Color.Transparent
+                            ,label = ""
+                        )
+                        val alignment = Alignment.CenterEnd
+                        Box(
+                            Modifier.fillMaxSize().background(color).padding(horizontal = 20.dp),
+                            contentAlignment = alignment
+                        ){
+                            Icon(Icons.Default.Delete,
+                                contentDescription = "Delete Icon",
+                                tint = Color.White)
+                        }
+
+                    },
                     directions = setOf(DismissDirection.EndToStart),
                     dismissThresholds = {FractionalThreshold(1f)},
                     dismissContent = {
                         WishItem(wish = wish) {
                             val id = wish.id
-                            navController.navigate(Screen.AddScrean.route + "/$id")
+                            navController.navigate(Screen.AddScreen.route + "/$id")
                         }
                     }
                 )
