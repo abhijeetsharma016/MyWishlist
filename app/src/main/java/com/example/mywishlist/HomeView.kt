@@ -74,7 +74,7 @@ fun HomeView(
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .padding(it)){
-            items(wishlist.value, key={wish-> wish.id} ){
+            items(wishlist.value){
                     wish ->
                 val dismissState = rememberDismissState(
                     confirmStateChange = {

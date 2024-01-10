@@ -3,9 +3,10 @@ package com.example.mywishlist.Data
 import kotlinx.coroutines.flow.Flow
 
 
+
 class WishRepository(private val wishDao: WishDao) {
 
-    suspend fun addWish(wish:Wish){
+    suspend fun addAWish(wish:Wish){
         wishDao.addAWish(wish)
     }
 

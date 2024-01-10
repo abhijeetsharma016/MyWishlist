@@ -12,53 +12,49 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class WishViewModel(
-    private val wishRepository:WishRepository = Graph.wishRepository
+    private val wishRepository: WishRepository = Graph.wishRepository
 ):ViewModel() {
+
     var wishTitleState by mutableStateOf("")
     var wishDescriptionState by mutableStateOf("")
 
 
-    fun onWishTitleChanged(newString: String) {
+    fun onWishTitleChanged(newString:String){
         wishTitleState = newString
     }
 
-    fun onWishDescriptionChanged(newString: String) {
-
+    fun onWishDescriptionChanged(newString: String){
         wishDescriptionState = newString
     }
 
-    lateinit var getAllWishes: Flow<List<Wish>> //lateinit is a promiss we make to compiler that the var will
+    lateinit var getAllWishes: Flow<List<Wish>>
 
-    // get time to setup i.e it will be initialised late and asynchronously
     init {
         viewModelScope.launch {
             getAllWishes = wishRepository.getWishes()
         }
     }
 
-    fun addWish(wish: Wish) {
-        viewModelScope.launch(Dispatchers.IO) {//Decides what thread or threads the coroutine will run on
-            //running the IO operation on main thread can block it and hence result in bad user experience
-            wishRepository.addWish(wish = wish)
+    fun addWish(wish: Wish){
+        viewModelScope.launch(Dispatchers.IO) {
+            wishRepository.addAWish(wish= wish)
         }
     }
 
-    fun getAWishById(id: Long): Flow<Wish> {
-        return wishRepository.getAWishById(id = id)
+    fun getAWishById(id:Long):Flow<Wish> {
+        return wishRepository.getAWishById(id)
     }
 
-    fun updateWish(wish: Wish) {
-        viewModelScope.launch(Dispatchers.IO) {//Decides what thread or threads the coroutine will run on
-            //running the IO operation on main thread can block it and hence result in bad user experience
-            wishRepository.updateAWish(wish = wish)
+    fun updateWish(wish: Wish){
+        viewModelScope.launch(Dispatchers.IO) {
+            wishRepository.updateAWish(wish= wish)
         }
     }
 
-    fun deleteWish(wish: Wish) {
-        viewModelScope.launch(Dispatchers.IO) {//Decides what thread or threads the coroutine will run on
-            //running the IO operation on main thread can block it and hence result in bad user experience
-            wishRepository.deleteAWish(wish = wish)
-
+    fun deleteWish(wish: Wish){
+        viewModelScope.launch(Dispatchers.IO) {
+            wishRepository.deleteAWish(wish= wish)
+            getAllWishes = wishRepository.getWishes()
         }
     }
 }

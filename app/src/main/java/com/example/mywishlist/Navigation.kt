@@ -7,7 +7,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.xample.mywishlist.HomeView
-
 @Composable
 fun Navigation(viewModel: WishViewModel = viewModel(),
                navController: NavHostController = rememberNavController()){
